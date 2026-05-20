@@ -144,11 +144,29 @@ with col_m2:
 df_filtered_motor = df[(df['Tahun'] == tahun_motor) & (df['Bulan'] == bulan_motor)]
 
 if 'Nama unit' in df.columns:
+    # 1. Kelompokkan dan urutkan data dari terbesar ke terkecil
     df_motor_g = df_filtered_motor.groupby('Nama unit').size().reset_index(name='Jumlah Terjual').sort_values(by='Jumlah Terjual', ascending=False)
-    fig_motor = px.bar(df_motor_g, x='Jumlah Terjual', y='Nama unit', orientation='h', text_auto=True, color='Nama unit')
+    
+    # 2. Buat fig bar chart seperti biasa
+    fig_motor = px.bar(
+        df_motor_g, 
+        x='Jumlah Terjual', 
+        y='Nama unit', 
+        orientation='h', 
+        text_auto=True, 
+        color='Nama unit'
+    )
+    
+    # 💡 PERBAIKAN UTAMA: Paksa sumbu Y mengikuti urutan data asli (kategori data)
+    # 'category descending' digunakan agar item paling laris berada di posisi paling atas pada chart horizontal
+    fig_motor.update_layout(
+        yaxis={'categoryorder': 'total ascending'},
+        height=700, # Menambah tinggi chart agar nama unit yang banyak tidak saling bertumpuk
+        showlegend=False # Opsional: Menyembunyikan legenda di kanan agar grafik lebih luas & rapi
+    )
+    
+    # fig_motor.update_layout(showlegend=False)
     st.plotly_chart(fig_motor, use_container_width=True)
-
-st.markdown("---")
 
 # ==========================================
 # 6. FITUR 4: ANALISIS WILAYAH (DRILLDOWN)
