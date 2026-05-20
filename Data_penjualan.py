@@ -184,6 +184,12 @@ if 'Kecamatan' in df.columns and 'Kelurahan' in df.columns:
     df_kec_g = df_filtered_wil.groupby('Kecamatan').size().reset_index(name='Penjualan').sort_values(by='Penjualan', ascending=False)
     fig_kec = px.bar(df_kec_g, x='Kecamatan', y='Penjualan', text_auto=True, color_discrete_sequence=['#AB63FA'])
     st.plotly_chart(fig_kec, use_container_width=True)
+
+    fig_kec.update_layout(
+        yaxis={'categoryorder': 'total ascending'},
+        height=700, # Menambah tinggi chart agar nama unit yang banyak tidak saling bertumpuk
+        showlegend=False # Opsional: Menyembunyikan legenda di kanan agar grafik lebih luas & rapi
+    )
     
     st.markdown("### 🏘️ Detail Kelurahan Berdasarkan Pilihan Kecamatan")
     kec_terpilih = st.selectbox("Pilih Nama Kecamatan untuk memunculkan detail Kelurahan:", options=df_kec_g['Kecamatan'].unique())
