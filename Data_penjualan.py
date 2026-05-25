@@ -16,7 +16,7 @@ SHEET_ID = "1KUtjz33w7w6q5Shq1iGYe4uufJwpHD5buEcUjEePKWU"
 GID = "1840604455"
 csv_url = f"https://docs.google.com/spreadsheets/d/{SHEET_ID}/export?format=csv&gid={GID}"
 
-@st.cache_data(ttl=1200) # Cache data selama 20 menit untuk mengurangi beban load ulang saat interaksi
+@st.cache_data(ttl=3600) # Cache data selama 20 menit untuk mengurangi beban load ulang saat interaksi
 def load_data():
     try:
         df = pd.read_csv(csv_url, sep=',', on_bad_lines='skip')
